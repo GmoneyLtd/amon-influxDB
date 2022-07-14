@@ -1,0 +1,101 @@
+# 指定 docker-compose 编译版本
+version: '3.8'
+
+services:
+  # 添加监控可视化面板
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana.apuer
+    hostname: grafana.apuer
+    restart: always
+    ports:
+      - 3000:3000
+    # 时间
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=Admin#123
+    volumes:
+      # 配置grafana 邮件服务器
+      - './grafana/config/grafana.ini:/etc/grafana/grafana.ini'
+      - './grafana/data:/var/lib/grafana'
+      - './grafana/log:/var/log/grafana'
+    networks:
+      - apuer.amon
+  
+  # 添加portainer
+  portainer:
+    image: portainer/portainer-ce:alpine
+    container_name: portainer.apuer
+    hostname: portainer.apuer
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./portainer/data:/data
+    ports:
+      - 9000:9000
+    networks:
+      - apuer.amon
+
+  # 添加amon接收APs/MDs的amon数据
+  amon:  
+    image: openjdk:17-jdk-alpine
+    container_name: amon.apuer
+    hostname: amon.apuer
+    restart: always
+    ports:
+      - 5555:5555
+      - 8211:8211/udp
+      - 8209:8209/udp
+    volumes:
+      # 配置数据目录
+      - ./amon:/opt/amon
+    working_dir: /opt/amon
+    entrypoint: 'java -jar amon-1.8.2-release.jar --amon-recorder --amon-store zmq  --amon-mappers ./config/amon-mappers.md'
+    networks:
+      - apuer.amon
+
+  # 添加telegraf service
+  telegraf:
+    image: telegraf:alpine
+    container_name: telegraf.apuer
+    hostname: telegraf.apuer
+    volumes:
+      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
+    depends_on:
+      - influxdb
+    ports:
+      - '8125:8125/udp'
+    restart: always
+    networks:
+      - apuer.amon
+
+
+  # 添加influxdb service
+  influxdb:
+    image: influxdb:alpine
+    container_name: influxdb.apuer
+    hostname: influxdb.apuer
+    ports:
+      - "8083:8083"
+      - "8086:8086"
+    env_file: 
+      - .env
+    # environment: 
+      # Use these same configurations parameters in your telegraf configuration, telegraf.conf.
+      # - DOCKER_INFLUXDB_INIT_MODE
+      # - DOCKER_INFLUXDB_INIT_USERNAME
+      # - DOCKER_INFLUXDB_INIT_PASSWORD
+      # - DOCKER_INFLUXDB_INIT_ORG
+      # - DOCKER_INFLUXDB_INIT_BUCKET
+      # - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN
+    volumes:
+      # 数据目录挂载
+      - ./influxdb/data:/var/lib/influxdb2:rw
+      # 配置文件挂载
+      # - ./influxdb/influxdb.conf:/etc/influxdb/influxdb.conf
+    restart: always
+    networks:
+      - apuer.amon
+
+networks:
+    apuer.amon:
+        driver: bridge
