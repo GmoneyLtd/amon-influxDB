@@ -78,7 +78,7 @@ services:
       - "8083:8083"
       - "8086:8086"
     env_file: 
-      - .env
+      - config.env
     # environment: 
       # Use these same configurations parameters in your telegraf configuration, telegraf.conf.
       # - DOCKER_INFLUXDB_INIT_MODE
