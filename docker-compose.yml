@@ -49,7 +49,7 @@ services:
       # 配置数据目录
       - ./amon:/opt/amon:rw
     working_dir: /opt/amon
-    entrypoint: 'nohup java -jar amon-1.8.2-release.jar --amon-recorder --amon-store zmq  --amon-mappers ./config/amon-mappers.md  >./amon.log &'
+    entrypoint: 'nohup java -jar amon-1.8.2-release.jar --amon-recorder --amon-store zmq  --amon-mappers ./config/amon-mappers.md  >amon.log 2>1& &'
     networks:
       - apuer.amon
 
