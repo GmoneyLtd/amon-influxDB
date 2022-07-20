@@ -75,6 +75,7 @@ services:
   # 添加influxdb service
   influxdb:
     image: influxdb:alpine
+    user: '472'
     container_name: influxdb.apuer
     hostname: influxdb.apuer
     ports:
@@ -92,9 +93,9 @@ services:
       # - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN
     volumes:
       # 数据目录挂载
-      - ./influxdb/data:/var/lib/influxdb2:rw
+      - ./influxdb/data:/var/lib/influxdb2
       # 配置文件挂载
-      # - ./influxdb/influxdb.conf:/etc/influxdb/influxdb.conf
+      - ./influxdb/config:/etc/influxdb2
     restart: always
     networks:
       - apuer.amon
