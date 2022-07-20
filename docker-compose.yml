@@ -4,6 +4,7 @@ version: '3.8'
 services:
   # 添加监控可视化面板
   grafana:
+    # chown 472:472 ./grafana/data -R 不然grafana service无法启动，宿主机权限问题
     image: grafana/grafana:latest
     user: '472'
     container_name: grafana.apuer
