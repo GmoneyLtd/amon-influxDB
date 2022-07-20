@@ -5,6 +5,7 @@ services:
   # 添加监控可视化面板
   grafana:
     image: grafana/grafana:latest
+    user: '472'
     container_name: grafana.apuer
     hostname: grafana.apuer
     restart: always
@@ -16,9 +17,9 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=Admin#123
     volumes:
       # 配置grafana 邮件服务器
-      - './grafana/config/grafana.ini:/etc/grafana/grafana.ini'
-      - './grafana/data:/var/lib/grafana'
-      - './grafana/log:/var/log/grafana'
+      - ./grafana/config/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/data:/var/lib/grafana
+      - ./grafana/log:/var/log/grafana
     networks:
       - apuer.amon
   
@@ -75,7 +76,6 @@ services:
   # 添加influxdb service
   influxdb:
     image: influxdb:alpine
-    user: '472'
     container_name: influxdb.apuer
     hostname: influxdb.apuer
     ports:
