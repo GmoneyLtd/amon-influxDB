@@ -56,20 +56,20 @@ services:
     networks:
       - apuer.amon
 
-  # 添加telegraf service
-  telegraf:
-    image: telegraf:alpine
-    container_name: telegraf.apuer
-    hostname: telegraf.apuer
-    volumes:
-      - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
-    depends_on:
-      - influxdb
-    ports:
-      - '8125:8125/udp'
-    restart: always
-    networks:
-      - apuer.amon
+  # 添加telegraf service,telegraf 目前版本不支持ZeroMQ，暂时注释掉
+  # telegraf:
+  #   image: telegraf:alpine
+  #   container_name: telegraf.apuer
+  #   hostname: telegraf.apuer
+  #   volumes:
+  #     - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
+  #   depends_on:
+  #     - influxdb
+  #   ports:
+  #     - '8125:8125/udp'
+  #   restart: always
+  #   networks:
+  #     - apuer.amon
 
 
   # 添加influxdb service
