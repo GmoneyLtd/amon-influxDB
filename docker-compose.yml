@@ -4,7 +4,7 @@ version: '3.8'
 services:
   # 添加监控可视化面板
   grafana:
-    # chown 472:472 ./grafana/data -R 不然grafana service无法启动，宿主机权限问题
+    # chown 472:472 ./grafana/data -R 不然grafana service无法启动，宿主机权限问题,也可以尝试 user: '0'
     image: grafana/grafana:latest
     user: '472'
     container_name: grafana.apuer
@@ -37,7 +37,7 @@ services:
     networks:
       - apuer.amon
 
-  # 添加amon接收APs/MDs的amon数据
+  # 添加amon接收MDs的amon数据
   amon:  
     image: openjdk:17-jdk-alpine
     container_name: amon.apuer
@@ -100,6 +100,22 @@ services:
     restart: always
     networks:
       - apuer.amon
+
+  # chronograf:
+  #   image: chronograf:alpine
+  #   container_name: chronograf.apuer
+  #   hostname: chronograf.apuer
+  #   volumes:
+  #     # Mount for chronograf database
+  #     - ./chronograf/data/:/var/lib/chronograf/
+  #   ports:
+  #     # The WebUI for Chronograf is served on port 8888
+  #     - "8888:8888"
+  #   depends_on:
+  #     - influxdb
+  #   restart: always
+  #   networks:
+  #     - apuer.amon
 
 networks:
     apuer.amon:
