@@ -78,7 +78,7 @@ services:
     build:
       context: ./amon2influxdb
       dockerfile: Dockerfile  
-    image: python_for_amon2influxdb:3.10.5
+    image: python4amon2influxdb:3.10.5
     container_name: amon2influxdb
     hostname: amon2influxdb
     restart: always
