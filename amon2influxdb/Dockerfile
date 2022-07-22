@@ -9,7 +9,7 @@ LABEL version=1.0 \
 RUN apk add --no-cache bash \
     && apk add --no-cache git \
     && rm -rf /var/cache/apk
-    # WORKDIR /amon_Consumed_influxdb 
+WORKDIR /opt/amon2influxdb 
 # RUN pip install --upgrade pip -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com -r requirements.txt
 # RUN pip install --upgrade pip -r requirements.txt
 # CMD ["python", "setup.py"]
