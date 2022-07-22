@@ -7,8 +7,8 @@ services:
     # chown 472:472 ./grafana/data -R 不然grafana service无法启动，宿主机权限问题,也可以尝试 user: '0'
     image: grafana/grafana:latest
     user: '472'
-    container_name: grafana.apuer
-    hostname: grafana.apuer
+    container_name: grafana
+    hostname: grafana
     restart: always
     ports:
       - 3000:3000
@@ -27,8 +27,8 @@ services:
   # 添加portainer
   portainer:
     image: portainer/portainer-ce:alpine
-    container_name: portainer.apuer
-    hostname: portainer.apuer
+    container_name: portainer
+    hostname: portainer
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./portainer/data:/data
@@ -40,8 +40,8 @@ services:
   # 添加amon接收MDs的amon数据
   amon:  
     image: openjdk:17-jdk-alpine
-    container_name: amon.apuer
-    hostname: amon.apuer
+    container_name: amon
+    hostname: amon
     restart: always
     ports:
       - 5555:5555
@@ -73,12 +73,33 @@ services:
   #   networks:
   #     - apuer.amon
 
+  # 添加amon2influxdb 服务，python版本的3.10.5,运行python脚本，订阅amon service的ZeroMQ消息，并将消息写入influxdb service的influxdb数据库中
+  amon2influxdb:
+    build:
+      context: ./amon2influxdb
+      dockerfile: Dockerfile  
+    image: python:3.10.5-alpine3.16-apuer
+    container_name: amon2influxdb
+    hostname: amon2influxdb
+    restart: always
+    # ports:
+    #   - 5555:5555
+    volumes:
+      # 配置数据目录
+      - ./amon2influxdb:/opt/amon2influxdb
+    working_dir: /opt/amon2influxdb
+    # entrypoint: 'nohup java -jar amon-1.8.2-release.jar --amon-recorder --amon-store zmq  --amon-mappers ./config/amon-mappers.md  >amon.log 2>1& &'
+    # entrypoint: ["sh", "-c", "java -jar amon-1.8.2-release.jar --amon-recorder --amon-store zmq  --amon-mappers ./config/amon-mappers.md", ">amon.log", "2>1&", "&"]
+    entrypoint: sh ./amon2influxdb/amon2influxdb.sh
+
+    networks:
+      - apuer.amon 
 
   # 添加influxdb service
   influxdb:
     image: influxdb:alpine
-    container_name: influxdb.apuer
-    hostname: influxdb.apuer
+    container_name: influxdb
+    hostname: influxdb
     ports:
       - "8083:8083"
       - "8086:8086"
@@ -103,8 +124,8 @@ services:
 
   # chronograf:
   #   image: chronograf:alpine
-  #   container_name: chronograf.apuer
-  #   hostname: chronograf.apuer
+  #   container_name: chronograf
+  #   hostname: chronograf
   #   volumes:
   #     # Mount for chronograf database
   #     - ./chronograf/data/:/var/lib/chronograf/
