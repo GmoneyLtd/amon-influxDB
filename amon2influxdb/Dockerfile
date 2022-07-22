@@ -5,6 +5,10 @@ LABEL version=1.0 \
 
 ENV GIT_URL='https://github.com/GmoneyLtd/amon_Consumed_influxdb.git'
 
+# 变更alpine为阿里源，好慢啊！
+RUN echo http://mirrors.aliyun.com/alpine/v3.16/main/ > /etc/apk/repositories && \
+    echo http://mirrors.aliyun.com/alpine/v3.16/community/ >> /etc/apk/repositories
+
 # install bash shell & git
 RUN apk add --no-cache bash \
     && apk add --no-cache git \
