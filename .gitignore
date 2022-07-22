@@ -21,3 +21,10 @@ rad.json
 #Test results file
 TestResults.xml
 .DS_Store
+/amon/log
+/grafana/data
+/grafana/log
+/portainer
+/influxdb
+/chronograf
+
