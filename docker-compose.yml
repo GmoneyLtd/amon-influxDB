@@ -88,7 +88,7 @@ services:
       # 配置数据目录
       - ./amon2influxdb/data:/opt/amon2influxdb/
       # 映射shell脚本目录
-      - ./amon2influxdb/config:/opt/amon2influxdb:ro
+      - ./amon2influxdb/config/amon2influxdb.sh:/opt/amon2influxdb:ro
     working_dir: /opt/amon2influxdb
     entrypoint: sh ./amon2influxdb.sh
 
