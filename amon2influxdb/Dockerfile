@@ -14,8 +14,8 @@ RUN apk add --no-cache bash \
     && apk add --no-cache git \
     && rm -rf /var/cache/apk
 WORKDIR /opt/amon2influxdb
-RUN git clone --depth 1 $GIT_URL /opt/amon2influxdb 
-RUN pip install --upgrade pip -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com -r requirements.txt
+RUN git clone --depth 1 $GIT_URL /opt/amon2influxdb \
+    && pip install --upgrade pip -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com -r requirements.txt
 # RUN pip install --upgrade pip -r requirements.txt
 # CMD ["python", "setup.py"]
 CMD ["/bin/sh"]
