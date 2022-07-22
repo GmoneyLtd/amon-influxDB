@@ -90,7 +90,7 @@ services:
     working_dir: /opt/amon2influxdb
     # entrypoint: 'nohup java -jar amon-1.8.2-release.jar --amon-recorder --amon-store zmq  --amon-mappers ./config/amon-mappers.md  >amon.log 2>1& &'
     # entrypoint: ["sh", "-c", "java -jar amon-1.8.2-release.jar --amon-recorder --amon-store zmq  --amon-mappers ./config/amon-mappers.md", ">amon.log", "2>1&", "&"]
-    entrypoint: sh ./amon2influxdb.sh
+    entrypoint: sh ./config/amon2influxdb.sh
 
     networks:
       - apuer.amon 
