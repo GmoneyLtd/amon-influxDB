@@ -86,11 +86,11 @@ services:
     #   - 5555:5555
     volumes:
       # 配置数据目录
-      - ./amon2influxdb:/opt/amon2influxdb/
+      - ./amon2influxdb/data:/opt/amon2influxdb/
+      # 映射shell脚本目录
+      - ./amon2influxdb/config:/opt/amon2influxdb:ro
     working_dir: /opt/amon2influxdb
-    # entrypoint: 'nohup java -jar amon-1.8.2-release.jar --amon-recorder --amon-store zmq  --amon-mappers ./config/amon-mappers.md  >amon.log 2>1& &'
-    # entrypoint: ["sh", "-c", "java -jar amon-1.8.2-release.jar --amon-recorder --amon-store zmq  --amon-mappers ./config/amon-mappers.md", ">amon.log", "2>1&", "&"]
-    entrypoint: sh ./config/amon2influxdb.sh
+    entrypoint: sh ./amon2influxdb.sh
 
     networks:
       - apuer.amon 
