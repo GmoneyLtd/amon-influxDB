@@ -36,6 +36,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
     ports:
       - 9000:9000
+      - 9443:9443
     networks:
       - apuer.amon
 
