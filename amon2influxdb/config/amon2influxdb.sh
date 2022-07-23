@@ -6,7 +6,7 @@
 # kill $!
 # timeout 5 git pull >>./log/gitPull_Status$(date "+%Y-%m-%d").log 2>&1
 timeout 5 git pull
-if $? = 0; then
+if [ $? -eq 0 ]; then
     echo "`date` ---- Git Pull Success" >>./log/amon2influxdb_git-$(date "+%Y-%m-%d").log 2>&1
 else
     echo "`date` ---- Git Pull Failed" >>./log/amon2influxdb_git-$(date "+%Y-%m-%d").log 2>&1
