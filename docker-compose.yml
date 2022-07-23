@@ -32,6 +32,8 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./portainer/data:/data
+      # 时区
+      - /etc/localtime:/etc/localtime:ro
     ports:
       - 9000:9000
     networks:
@@ -50,6 +52,8 @@ services:
     volumes:
       # 配置数据目录
       - ./amon:/opt/amon
+      # 时区
+      - /etc/localtime:/etc/localtime:ro
     working_dir: /opt/amon
     # entrypoint: 'nohup java -jar amon-1.8.2-release.jar --amon-recorder --amon-store zmq  --amon-mappers ./config/amon-mappers.md  >amon.log 2>1& &'
     # entrypoint: ["sh", "-c", "java -jar amon-1.8.2-release.jar --amon-recorder --amon-store zmq  --amon-mappers ./config/amon-mappers.md", ">amon.log", "2>1&", "&"]
@@ -86,12 +90,14 @@ services:
     #   - 5555:5555
     volumes:
       # 配置数据目录
-      - ./amon2influxdb/data:/opt/amon2influxdb/
+      - ./amon2influxdb/log:/opt/amon2influxdb/log
       # 映射shell脚本目录
-      - ./amon2influxdb/config/amon2influxdb.sh:/opt/amon2influxdb:ro
-    working_dir: /opt/amon2influxdb
-    # entrypoint: sh ./amon2influxdb.sh
-
+      - ./amon2influxdb/config:/opt/amon2influxdb/config:ro
+      # 时区
+      - /etc/localtime:/etc/localtime:ro
+    # docker file 中配置了working_dir，所以这里不需要指定
+    # working_dir: /opt/amon2influxdb
+    entrypoint: sh ./config/amon2influxdb.sh
     networks:
       - apuer.amon 
 
@@ -137,7 +143,6 @@ services:
   #   restart: always
   #   networks:
   #     - apuer.amon
-
 networks:
     apuer.amon:
         driver: bridge

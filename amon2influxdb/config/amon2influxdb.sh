@@ -1,5 +1,18 @@
 #!/bin/sh
-echo $(pwd)
-git  pull  >>./log/amon2influxdb_$(date "+%Y-%m-%d").log 2>&1
-nohup python ./amon_Consumed_influxdb/setup.py >>./log/amon2influxdb_$(date "+%Y-%m-%d").log 2>&1 &
-echo "amon2influxdb is running"
+
+# echo $(pwd)
+# git  pull & sleep 5 >>./log/gitPull_Status$(date "+%Y-%m-%d").log 2>&1
+# kill -9 $(ps -ef | grep "git" | awk '{print $1}')
+# kill $!
+# timeout 5 git pull >>./log/gitPull_Status$(date "+%Y-%m-%d").log 2>&1
+timeout 5 git pull
+if $? = 0; then
+    echo "`date`---- Git Pull Success" >>./log/amon2influxdb_git$(date "+%Y-%m-%d").log 2>&1
+else
+    echo "`date`---- Git Pull Failed" >>./log/amon2influxdb_git$(date "+%Y-%m-%d").log 2>&1
+fi
+
+# 运行python脚本
+python setup.py
+# python setup.py > /dev/null 2>&1 &
+# echo "amon2influxdb is running"
