@@ -83,7 +83,7 @@ services:
     build:
       context: ./amon2influxdb
       dockerfile: Dockerfile  
-    image: python4amon2influxdb:3.10.5
+    image: a0608390/python4amon2influxdb:3.10.5
     container_name: amon2influxdb
     hostname: amon2influxdb
     restart: always
@@ -111,7 +111,7 @@ services:
       - "8083:8083"
       - "8086:8086"
     env_file: 
-      - config.env
+      - ./influxdb/influxdb.env
     # environment: 
       # Use these same configurations parameters in your telegraf configuration, telegraf.conf.
       # - DOCKER_INFLUXDB_INIT_MODE
