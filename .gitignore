@@ -25,6 +25,7 @@ TestResults.xml
 /grafana/data
 /grafana/log
 /portainer
-/influxdb
+/influxdb/config
+/influxdb/data
 /chronograf/*log
 
