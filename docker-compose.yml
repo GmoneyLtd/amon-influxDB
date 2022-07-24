@@ -6,7 +6,7 @@ services:
   grafana:
     # chown 472:472 ./grafana/data -R 不然grafana service无法启动，宿主机权限问题,也可以尝试 user: '0'
     image: grafana/grafana:latest
-    user: '472'
+    user: '0'
     container_name: grafana
     hostname: grafana
     restart: always
