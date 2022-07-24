@@ -17,7 +17,7 @@ ENV git_uri='https://github.com/GmoneyLtd/amon_Consumed_influxdb.git' \
     port="5555" \
     topic="" \
     # python script log fiel level
-    level="INFO"
+    level="ERROR"
 
 # 变更alpine为阿里源，好慢啊！
 RUN echo http://mirrors.aliyun.com/alpine/v3.16/main/ > /etc/apk/repositories && \
@@ -28,7 +28,7 @@ RUN apk add --no-cache bash \
     && apk add --no-cache git \
     && rm -rf /var/cache/apk
 WORKDIR /opt/amon2influxdb
-RUN git clone --depth 1 $git_uri /opt/amon2influxdb \
+RUN git clone --depth 1 -b docker $git_uri /opt/amon2influxdb \
     && pip install --upgrade pip -i https://mirrors.aliyun.com/pypi/simple/ --trusted-host mirrors.aliyun.com -r requirements.txt
 # RUN pip install --upgrade pip -r requirements.txt
 # CMD ["python", "setup.py"]
