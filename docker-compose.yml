@@ -89,6 +89,10 @@ services:
     restart: always
     # ports:
     #   - 5555:5555
+
+    # debug阶段，dockerfile定义日志级别为ERROR，通过env修改为info，可以获取详细日志信息
+    environment:
+      - level=INFO
     volumes:
       # 配置数据目录
       - ./amon2influxdb/log:/opt/amon2influxdb/log
