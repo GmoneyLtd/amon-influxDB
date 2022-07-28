@@ -66,10 +66,32 @@ services:
   # 添加telegraf service,telegraf 目前版本不支持ZeroMQ，暂时注释掉
   # telegraf:
   #   image: telegraf:alpine
-  #   container_name: telegraf.apuer
-  #   hostname: telegraf.apuer
+  #   container_name: telegraf
+  #   hostname: telegraf
   #   volumes:
   #     - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
+  #   depends_on:
+  #     - influxdb
+  #   ports:
+  #     - '8125:8125/udp'
+  #   restart: always
+  #   networks:
+  #     - apuer.amon
+
+  # 添加telegraf service,telegraf 监控ecs及docker状态
+  # telegraf:
+  #   image: telegraf:alpine
+  #   container_name: telegraf
+  #   hostname: telegraf
+  #   volumes:
+  #     - ./telegraf/telegraf.conf:/etc/telegraf/telegraf.conf
+  #     - /sys:/rootfs/sys:ro
+  #     - /proc:/rootfs/proc:ro
+  #     - /var/run/docker.sock:/var/run/docker.sock:ro
+  #     # 时区 定义时区后时间刻度异常，保持默认就可以，通过grafana 时间自适应就OK
+  #     # - /etc/localtime:/etc/localtime:ro
+  #   env_file: 
+  #     - ./telegraf/telegraf.env
   #   depends_on:
   #     - influxdb
   #   ports:
